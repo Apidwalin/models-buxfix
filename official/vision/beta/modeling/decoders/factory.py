@@ -85,6 +85,25 @@ def build_decoder(
         norm_epsilon=norm_activation_config.norm_epsilon,
         activation=norm_activation_config.activation,
         kernel_regularizer=l2_regularizer)
+  elif decoder_type == 'mrfm':
+    decoder = decoders.MRFM(
+        input_specs=input_specs,
+        feature_map_layout={
+            decoders.mrfm.FROM_LAYER: decoder_cfg.fml_from_layer,
+            decoders.mrfm.LAYER_DEPTH: decoder_cfg.fml_layer_depth
+        },
+        depth_multiplier=decoder_cfg.depth_multiplier,
+        min_depth=decoder_cfg.min_depth,
+        insert_1x1_conv=decoder_cfg.insert_1x1_conv,
+        kernel_size=decoder_cfg.kernel_size,
+        use_explicit_padding=decoder_cfg.use_explicit_padding,
+        use_depthwise=decoder_cfg.use_depthwise,
+        activation=norm_activation_config.activation,
+        use_sync_bn=norm_activation_config.use_sync_bn,
+        norm_momentum=norm_activation_config.norm_momentum,
+        norm_epsilon=norm_activation_config.norm_epsilon,
+        kernel_regularizer=l2_regularizer
+    )
   else:
     raise ValueError('Decoder {!r} not implement'.format(decoder_type))
 
